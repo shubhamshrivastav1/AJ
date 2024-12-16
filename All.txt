@@ -1,0 +1,2231 @@
+#Bank Account Application
+
+#To design a simple application to perform various operations on account 
+such as open, withdraw, deposit, etc
+
+class Account {
+    // Data members - instance variables
+    int acNo;
+    String acName;
+    double acBal;
+
+    // Constructor - three arguments
+    Account(int acNo, String acName, double acBal) {
+        this.acNo = acNo;
+        this.acName = acName;
+        this.acBal = acBal;
+    }
+
+    // Getters and setters
+    int getAcNo() {
+        return this.acNo;
+    }
+
+    void setAcNo(int acNo) {
+        this.acNo = acNo;
+    }
+
+    String getAcName() {
+        return this.acName;
+    }
+
+    void setAcName(String acName) {
+        this.acName = acName;
+    }
+
+    double getAcBal() {
+        return this.acBal;
+    }
+
+    void setAcBal(double acBal) {
+        this.acBal = acBal;
+    }
+}
+
+class AccountTest {
+    // Method to print account details
+    static void print(Account temp) {
+        System.out.println("Account No: " + temp.getAcNo());
+        System.out.println("Account Name: " + temp.getAcName());
+        System.out.println("Account Balance: " + temp.getAcBal());
+    }
+
+    public static void main(String[] args) {
+        // Create account objects
+        Account a1 = new Account(101, "Siddharth", 700000);
+        Account a2 = new Account(102, "Liam", 7000000);
+
+        // Print account details
+        print(a1);
+        print(a2);
+    }
+}
+
+
+
+# Employee Application (Raise)
+#Create a class called Employee that includes three pieces of
+ information as instance variables—a first name (typeString),
+ a last name (typeString) and a monthly salary (double). Your
+ class should have a constructor that initializes the three
+ instance variables. Provide a set and a get method for each
+ instance variable. If the monthly salary is not positive, set it to
+ 0.0. Write a test application named EmployeeTest that
+ demonstrates class Employee’s capabilities. Create two
+ Employee objects and display each object’s yearly salary.
+ Then give each Employee a 10% raise and display each
+ Employee’s yearly salary again.
+
+
+
+class Employee {
+    String firstName;
+    String lastName;
+    double monSal;
+    static double raise;
+
+    // Static method to set raise percentage
+    static void setRaise(double raise) {
+        Employee.raise = raise;
+    }
+
+    // Constructor
+    Employee(String firstName, String lastName, double monSal) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        setMonSal(monSal);
+    }
+
+    // Getters and setters for firstName
+    String getFirstName() {
+        return this.firstName;
+    }
+
+    void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    // Getters and setters for lastName
+    String getLastName() {
+        return this.lastName;
+    }
+
+    void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    // Getters and setters for monSal
+    double getMonSal() {
+        return this.monSal;
+    }
+
+    void setMonSal(double monSal) {
+        if (monSal < 0) 
+            this.monSal = 0.0;
+        else 
+            this.monSal = monSal;
+    }
+
+    // Method to calculate annual salary
+    double annualSal() {
+        return this.monSal * 12;
+    }
+
+    // Static method to apply raise
+    static void giveRaise(Employee obj) {
+        double newMonSal = obj.getMonSal() * (1 + (raise / 100));
+        obj.setMonSal(newMonSal);
+    }
+}
+
+public class EmployeeTest {
+    public static void main(String[] args) {
+        // Create Employee objects
+        Employee e1 = new Employee("Rohit", "Singh", 8000);
+        Employee e2 = new Employee("Aditya", "Singh", 32000);
+
+        // Print initial salaries
+        System.out.println("---Initial Salary---");
+        System.out.println("Salary of e1: " + e1.getMonSal());
+        System.out.println("Annual Salary of e1: " + e1.annualSal());
+        System.out.println("Salary of e2: " + e2.getMonSal());
+        System.out.println("Annual Salary of e2: " + e2.annualSal());
+        System.out.println();
+
+        // Set raise percentage and apply raise
+        Employee.setRaise(10);
+        Employee.giveRaise(e1);
+        Employee.giveRaise(e2);
+
+        // Print salaries after raise
+        System.out.println("---After Raise---");
+        System.out.println("Salary of e1: " + e1.getMonSal());
+        System.out.println("Annual Salary of e1: " + e1.annualSal());
+        System.out.println("Salary of e2: " + e2.getMonSal());
+        System.out.println("Annual Salary of e2: " + e2.annualSal());
+    }
+}
+
+
+
+#Employee Inheritance Method overriding
+#To design an application using Employee class 
+and its sub-classes.
+
+
+class Employee {
+    // Data Members
+    protected int eid;
+    protected String ename;
+    protected double salary;
+
+    // Constructors
+    Employee(int eid, String ename) {
+        this.eid = eid;
+        this.ename = ename;
+    }
+
+    // Getters
+    int getEid() {
+        return this.eid;
+    }
+
+    String getEname() {
+        return this.ename;
+    }
+
+    double getSalary() {
+        return this.salary;
+    }
+
+    // Utility
+    void calSalary() {
+        // To be overridden in subclasses
+    }
+}
+
+class DailyWagesEmp extends Employee {
+    // Additional attributes
+    double numOfDays;
+    double dailyWages;
+
+    // Constructor
+    DailyWagesEmp(int eid, String ename, double numOfDays, double dailyWages) {
+        super(eid, ename);
+        this.numOfDays = numOfDays;
+        this.dailyWages = dailyWages;
+    }
+
+    // Override calSalary()
+    @Override
+    void calSalary() {
+        salary = numOfDays * dailyWages;
+    }
+}
+
+class PermanentEmp extends Employee {
+    // Additional attribute
+    double basicSal;
+
+    // Static attributes
+    static final double HRA = 30; // in percentage
+    static final double DA = 164; // in percentage
+    static final double TA = 1600; // fixed amount
+    static final double PF = 12.5; // in percentage
+
+    // Constructor
+    PermanentEmp(int eid, String ename, double basicSal) {
+        super(eid, ename);
+        this.basicSal = basicSal;
+    }
+
+    // Override calSalary()
+    @Override
+    void calSalary() {
+        salary = basicSal + (basicSal * DA / 100) + (basicSal * HRA / 100) + TA - (basicSal * PF / 100);
+    }
+}
+
+class EmpInh {
+    public static void main(String[] args) {
+        // Daily Wages Employee
+        Employee e1 = new DailyWagesEmp(101, "ABC", 12, 980);
+        e1.calSalary();
+        System.out.println("Employee Name: " + e1.getEname());
+        System.out.println("Employee Salary: " + e1.getSalary());
+        System.out.println();
+
+        // Permanent Employee
+        Employee e2 = new PermanentEmp(102, "XYZ", 30000);
+        e2.calSalary();
+        System.out.println("Employee Name: " + e2.getEname());
+        System.out.println("Employee Salary: " + e2.getSalary());
+    }
+}
+
+
+
+#Array Utilities
+
+ To design a java app to perform various operations
+ on array as below:
+ 1) Find max of array
+ 2) Find min of Array
+ 3) Find Mean of Array
+ 4) Find Standard Deviation of Array
+
+
+class ArrayUtilities {
+    // Instance Variables
+    int[] data;
+    int size;
+
+    // Constructor
+    ArrayUtilities(int size) {
+        this.size = size;
+        data = new int[size];
+    }
+
+    // Method to set data
+    void setData(int[] data) {
+        this.data = data;
+    }
+
+    // Find Maximum of an Array
+    int findMax() {
+        int max = data[0];
+        for (int i = 1; i < data.length; i++) {
+            if (max < data[i])
+                max = data[i];
+        }
+        return max;
+    }
+
+    // Find Minimum of an Array
+    int findMin() {
+        int min = data[0];
+        for (int x : data) {
+            if (min > x)
+                min = x;
+        }
+        return min;
+    }
+
+    // Find MEAN of an Array
+    double findMean() {
+        double sum = 0;
+        for (int x : data) {
+            sum += x;
+        }
+        return sum / size;
+    }
+
+    // Find Standard Deviation of an Array
+    double findSD() {
+        double mean = findMean();
+        double sd = 0;
+        for (int x : data) {
+            sd += Math.pow(x - mean, 2);
+        }
+        return Math.sqrt(sd / size);
+    }
+}
+
+class ArrayDemo {
+    public static void main(String[] args) {
+        int[] data = {12, 5, 9, 11, 23, 6};
+        ArrayUtilities util = new ArrayUtilities(6);
+        util.setData(data);
+
+        System.out.println("MAX of Array: " + util.findMax());
+        System.out.println("MIN of Array: " + util.findMin());
+        System.out.println("MEAN of Array: " + util.findMean());
+        System.out.println("Standard Deviation of Array: " + util.findSD());
+    }
+}
+
+
+
+
+# Lambda Expressions
+
+ A) Calculator without Lambda.
+ B) Calculator with Lambda
+
+A)Calculator without Lambda.
+
+// Interface Calculator
+interface Calculator {
+    int add(int a, int b);
+    int sub(int a, int b);
+    int mult(int a, int b);
+    int div(int a, int b);
+}
+
+// Implementation of Calculator Interface
+class CalculatorImpl implements Calculator {
+    // Add method
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    // Subtract method
+    public int sub(int a, int b) {
+        return a - b;
+    }
+
+    // Multiply method
+    public int mult(int a, int b) {
+        return a * b;
+    }
+
+    // Divide method
+    public int div(int a, int b) {
+        return a / b;
+    }
+}
+
+// Demo Class
+class CalDemo {
+    public static void main(String[] args) {
+        // Create an instance of CalculatorImpl
+        Calculator c1 = new CalculatorImpl();
+
+        // Perform operations and print results
+        System.out.println("Addition: " + c1.add(10, 20));
+        System.out.println("Subtraction: " + c1.sub(10, 20));
+        System.out.println("Multiplication: " + c1.mult(10, 20));
+        System.out.println("Division: " + c1.div(40, 20));
+    }
+}
+
+
+
+B)Calculator with Lambda
+
+// Functional Interface for Calculator with Lambda
+interface CalculatorLambda {
+    int op(int a, int b);
+}
+
+class CalculatorWithLambda {
+    public static void main(String[] args) {
+        // Lambda expressions for basic operations
+        CalculatorLambda add = (a, b) -> a + b;
+        CalculatorLambda sub = (a, b) -> { return a - b; };
+        CalculatorLambda mult = (a, b) -> a * b;
+        CalculatorLambda div = (a, b) -> a / b;
+
+        // Perform operations and print results
+        System.out.println("Addition: " + add.op(10, 20));
+        System.out.println("Subtraction: " + sub.op(10, 20));
+        System.out.println("Multiplication: " + mult.op(10, 20));
+        System.out.println("Division: " + div.op(10, 20));
+    }
+}
+
+
+
+#Box Class
+# Design a generic box to store a single item of 
+any data type.
+
+// Generic Class Box
+class Box<T> {
+    // Instance variable
+    T item;
+
+    // Constructor
+    Box(T item) {
+        this.item = item;
+    }
+
+    // Setter
+    void setItem(T item) {
+        this.item = item;
+    }
+
+    // Getter
+    T getItem() {
+        return this.item;
+    }
+}
+
+class BoxImpl {
+    public static void main(String[] args) {
+        // Instantiate with Integer
+        Box<Integer> b1 = new Box<>(60);
+        b1.setItem(21);
+        System.out.println("Item: " + b1.getItem());
+
+        // Instantiate with String
+        Box<String> b2 = new Box<>("Name");
+        b2.setItem("Rohit");
+        System.out.println("Item: " + b2.getItem());
+
+        // Instantiate with Double
+        Box<Double> b3 = new Box<>(60.30);
+        b3.setItem(60.29);
+        System.out.println("Item: " + b3.getItem());
+    }
+}
+
+
+# Generic Stack
+# Design a generic stack class providing basic 
+operations such as overflow, underflow, push 
+and pop.
+
+import java.util.*;
+
+class MyStack<T> {
+    // Container
+    ArrayList<T> data;
+    // Size of Stack
+    int size;
+    // Top of Stack
+    int tos;
+
+    // Constructor
+    MyStack(int size) {
+        this.size = size;
+        this.tos = -1;
+        this.data = new ArrayList<>(size);
+    }
+
+    // Push an element onto the stack
+    void push(T elem) {
+        // Increment tos by 1
+        tos++;
+        // Check for overflow
+        if (tos < size) {
+            // Push the element
+            if (tos < data.size()) {
+                data.set(tos, elem); // Replace existing element
+            } else {
+                data.add(tos, elem); // Add new element
+            }
+            System.out.println("Pushed: " + elem);
+        } else {
+            tos--;
+            System.out.println("Overflow!!");
+        }
+    }
+
+    // Pop an element from the stack
+    T pop() {
+        // Check for underflow
+        if (tos >= 0) {
+            T val = data.get(tos--);
+            return val;
+        } else {
+            System.out.println("Underflow!!");
+            return null;
+        }
+    }
+}
+
+class StackImpl {
+    public static void main(String[] args) {
+        // Integer Stack
+        System.out.println("Stack<Integer>");
+        MyStack<Integer> s1 = new MyStack<>(3);
+
+        // Add Elements
+        s1.push(10);
+        s1.push(20);
+        s1.push(30);
+        s1.push(40);
+
+        // Pop Elements
+        System.out.println("Popped: " + s1.pop());
+        System.out.println("Popped: " + s1.pop());
+        System.out.println("Popped: " + s1.pop());
+        System.out.println("Popped: " + s1.pop());
+
+        System.out.println("\nStack<String>");
+        // String Stack
+        MyStack<String> s2 = new MyStack<>(2);
+
+        // Add Elements
+        s2.push("Rohan");
+        s2.push("Varma");
+        s2.push("...");
+
+        // Pop Elements
+        System.out.println("Popped: " + s2.pop());
+        System.out.println("Popped: " + s2.pop());
+        System.out.println("Popped: " + s2.pop());
+    }
+}
+
+
+#Pair Class
+#Design a generic Pair class to represent key 
+and value pairs of different data types. 
+Override toString() method to return the 
+associated key and values. Provide setters and 
+getters for both key and values.
+
+
+class Pair<T, U> {
+    // Instance variables
+    T key;
+    U value;
+
+    // Setter for key
+    void setKey(T key) {
+        this.key = key;
+    }
+
+    // Getter for key
+    T getKey() {
+        return this.key;
+    }
+
+    // Setter for value
+    void setValue(U value) {
+        this.value = value;
+    }
+
+    // Getter for value
+    U getValue() {
+        return this.value;
+    }
+
+    // toString method to display key-value pair
+    public String toString() {
+        return "Key: " + this.key + ", Value: " + this.value;
+    }
+}
+
+class PairImpl {
+    public static void main(String[] args) {
+        System.out.println("Object 1 - ");
+        Pair<String, Integer> marks1 = new Pair<>();
+        marks1.setKey("Maths");
+        marks1.setValue(20);
+        System.out.println(marks1);
+
+        System.out.println("\nObject 2 - ");
+        Pair<Integer, Double> marks2 = new Pair<>();
+        marks2.setKey(10);
+        marks2.setValue(10.4);
+        System.out.println("Key: " + marks2.getKey());
+        System.out.println("Value: " + marks2.getValue());
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------
+
+# add tomcat in eclips go to server down-side of eclips (server) add go apppachi finde server click after down and give the path to bin folder next.
+
+# making jsp page go to new>Dynamic web project.   give the name project (Note: Generate web.xml (imp)) name and next>>> finish
+
+#click on Dynamic-project(<prject-name>) go to new> Jsp File>Page-name:(Index.jsp) next> == new JSP File(xhtml) ---xhtml markup >finish
+
+
+#JSP -1(A)
+
+# Design a simple jsp application to display current 
+date and time.
+
+# ->Index.jsp
+
+<%@ page language="java" import="java.util.*" %>
+<html>
+<head>
+    <title>My First Web App</title>
+</head>
+<body>
+    <h1>Date Time Display</h1>
+    <hr />
+    Current Date and Time: <%= new Date() %>
+</body>
+</html>
+
+------------------------------------------------------------------------
+
+#JSP-1(B)
+
+#Design a two page application (Multiplication Table)
+
+
+# ->index.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" isErrorPage="true"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<body>
+
+     <h1>OOPS! Someting Went Wrong.......</h1>
+     <br/>
+     Exception: <%= exception.getMessage() %>
+     <br/><br/>
+     <a href="Index.jsp">Try Again</a> 
+</body>
+</html>
+
+
+# ->MulTable.jsp
+
+<%@ page language="java" errorPage="ShowError.jsp" %>
+<html>
+    <head>
+       <title></title>
+    </head>
+    <body>
+        <h1>Multiplication Table</h1>
+        <hr>
+         <%
+             //step 1 - Fetch Date
+             String val=request.getParameter("txtNum");
+             int num=Integer.parseInt(val);
+             
+             //step 2 - Print Multiplication table
+             for(int i=0;i<=10;i++)
+             {
+         %>   	 
+            	 <%=num %> * <%=i %> = <%=(num*i) %><br> 
+        <% 
+             }  
+       
+         %>
+         <a href="Index.jsp">Print Another table</a>
+    </body>
+</html>
+
+
+#ShowError.jsp
+
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" isErrorPage="true"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+<title>Insert title here</title>
+</head>
+<body>
+
+     <h1>OOPS! Someting Went Wrong.......</h1>
+     <br/>
+     Exception: <%= exception.getMessage() %>
+     <br/><br/>
+     <a href="Index.jsp">Try Again</a> 
+</body>
+</html>
+
+-----------------------------------------
+
+
+Jsp2 (A)
+
+# Login Application - Static and dynamic
+
+# To design a login application using Databases and 
+without database.
+
+#->Login.jsp
+
+<%@ page language="java" %>
+<html>
+<head>
+    <title>Login Application</title>
+</head>
+<body>
+    <form action="CheckLoginDB.jsp" method="POST">
+        <table>
+            <tr>
+                <td>Username:</td>
+                <td><input type="text" name="username" required /></td>
+            </tr>
+            <tr>
+                <td>Password:</td>
+                <td><input type="password" name="password" required /></td>
+            </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="Login" />
+                </td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>
+
+
+#-> Welcome.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Welcome Page</title>
+</head>
+<body>
+    <h1>Welcome: <%= request.getParameter("txtUname") %></h1>
+</body>
+</html>
+
+
+#->InvalidUser.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Invalid User</title>
+</head>
+<body>
+    <h1>Username or Password is incorrect!</h1>
+    <br />
+    <a href="Login.jsp">Try Again</a>
+</body>
+</html>
+
+
+#-> CheckLogin.jsp
+
+<%@ page language="java" %>
+<html>
+<body>
+    <%
+        // Step 1 - Fetch username and password from the previous page
+        String un = request.getParameter("txtUname");
+        String pwd = request.getParameter("txtPwd");
+
+        // Step 2 - Check username and password
+        if (un.equals("om") && pwd.equals("1234")) {
+            // Username and password are correct
+            %>
+            <jsp:forward page="Welcome.jsp"></jsp:forward>
+            <%
+        } else {
+            // Username and password are incorrect - Redirect
+            %>
+            <jsp:forward page="InvalidUser.jsp" />
+            <%
+        }
+    %>
+</body>
+</html>
+
+>>>>>>>>>>>>>>>>>Code for PostgreSQL (Pg Admin)
+
+CREATE TABLE users (
+    uid VARCHAR(50) PRIMARY KEY,
+    pwd VARCHAR(50),
+    uname VARCHAR(50)
+);
+
+INSERT INTO users VALUES ('u1', '1234','Shiva');
+INSERT INTO users VALUES ('u2', '1234','Rohan');
+
+select * from users;
+
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Note: you have to add lib in postgress library and library add using classpath
+#-> CheckLoginDB.jsp
+
+<%@ page language="java" import="java.sql.*" %>
+<html>
+<body>
+    <%
+        // Step 1 - Load the DB Driver
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (Exception ex) {
+            out.println("Exception: " + ex.getMessage());
+        }
+
+        // Step 2 - Create Connection Object
+        try {
+            Connection conn = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "password");
+
+            // Step 3 - Fetch username and pwd from previous page
+            String un = request.getParameter("txtUname");
+            String pwd = request.getParameter("txtPwd");
+
+            // Create statement Object
+            Statement stmt = conn.createStatement();
+
+            // Query to fetch data from the table
+            String sql = "SELECT * FROM users WHERE uid='" + un + "'";
+            ResultSet rs = stmt.executeQuery(sql);
+
+            // Check whether there is a record
+            if (rs.next()) {
+                // Step 4 - Check username and pwd
+                if (un.equals(rs.getString(1)) && pwd.equals(rs.getString(2))) {
+                    // Username and password are correct
+                    <jsp:forward page="Welcome.jsp" />
+                } else {
+                    // Username and password are incorrect - Redirect
+                    <jsp:forward page="InvalidUser.jsp" />
+                }
+            } else {
+                // If no record is found
+                <jsp:forward page="InvalidUser.jsp" />
+            }
+        } catch (Exception ex) {
+            out.println("Error: " + ex.getMessage());
+        }
+    %>
+</body>
+</html>
+
+
+
+---------------------------------------------------------------------------------------------------------------
+
+
+#jsp 3 
+
+#Number Gassing Game
+
+#To Design a Number Guessing web application
+
+
+#-->Start.jsp
+
+<%@ page language="java" %>
+<html>
+<body>
+    <form action="NextGuess.jsp">
+        <h1>Select a Number between 0 - 99 :</h1>
+        <br />
+        <h2>Let me Guess !!</h2>
+        <input type="submit" name="btnOk" value="OKAY" />
+        <input type="hidden" name="lo" value="0" />
+        <input type="hidden" name="hi" value="100" />
+        <input type="hidden" name="cnt" value="1" />
+    </form>
+</body>
+</html>
+
+
+#-->NextGuess.jsp
+
+<%@ page language="java" %>
+<html>
+<body>
+    <h1>HIGH</h1>
+    <h1>LOW</h1>
+
+    <%! int guess = 0; %>
+
+    <%
+        // Fetch the hidden form fields values from the previous page
+        int hi = Integer.parseInt(request.getParameter("hi"));
+        int lo = Integer.parseInt(request.getParameter("lo"));
+        int cnt = Integer.parseInt(request.getParameter("cnt"));
+        
+        // Calculate the middle guess
+        guess = (hi + lo) / 2;
+    %>
+
+    <form action="CheckResult.jsp">
+        <h1>My Guess Number <%= cnt %> is: <%= guess %></h1>
+        <br />
+        <h1>How is My Guess?</h1>
+        <br />
+        <input type="radio" name="guesser" value="high" onClick="submit()" /> Too High
+        <input type="radio" name="guesser" value="low" onClick="submit()" /> Too Low
+        <input type="radio" name="guesser" value="perfect" onClick="submit()" /> Perfect
+        
+        <input type="hidden" name="lo" value="<%= lo %>" />
+        <input type="hidden" name="hi" value="<%= hi %>" />
+        <input type="hidden" name="cnt" value="<%= cnt %>" />
+    </form>
+</body>
+</html>
+
+
+#-->CheckResult.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Insert title here</title>
+</head>
+<body>
+    <%
+        // Fetch the hidden form fields values from the previous page
+        int hi = Integer.parseInt(request.getParameter("hi"));
+        int lo = Integer.parseInt(request.getParameter("lo"));
+        int cnt = Integer.parseInt(request.getParameter("cnt"));
+        String action = request.getParameter("guesser");
+        int guess = (lo + hi) / 2;
+
+        // Check the option given by user
+        if (action.equals("perfect")) {
+    %>
+            <jsp:forward page="Winner.jsp">
+                <jsp:param name="cnt" value="<%= cnt %>" />
+            </jsp:forward>
+        <%
+        } else if (hi <= lo || lo >= hi) {
+        %>
+            <jsp:forward page="Cheater.jsp">
+                <jsp:param name="cnt" value="<%= cnt %>" />
+            </jsp:forward>
+        <%
+        } else {
+            if (action.equals("low")) {
+                lo = guess;
+            } else {
+                hi = guess;
+            }
+        %>
+            <jsp:forward page="NextGuess.jsp">
+                <jsp:param name="cnt" value="<%= ++cnt %>" />
+                <jsp:param name="lo" value="<%= lo %>" />
+                <jsp:param name="hi" value="<%= hi %>" />
+            </jsp:forward>
+        <%
+        }
+    %>
+</body>
+</html>
+
+
+#-->Winner.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Winner</title>
+</head>
+<body>
+    <% 
+        String cnt = request.getParameter("cnt");  
+    %>
+    <h2>You guessed in : <%= cnt %></h2>
+    <br />
+    <a href="Start.jsp"> Play Again</a>
+</body>
+</html>
+
+
+#-->Cheater.jsp
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Insert title here</title>
+</head>
+<body>
+    <h1> You are a cheater!!</h1>
+</body>
+</html>
+
+
+----------------------------------------------------------------------------------------------- 
+
+#JSTL
+
+note:-you have to add library Web App libraries(3) same as postgresslib (you have to add 3 libireries in this lib)
+
+
+dtabase>>>>>---------------
+CREATE TABLE movies (
+    mid INTEGER PRIMARY KEY,
+    mtitle VARCHAR(50),
+    director VARCHAR(50),
+    duration INTEGER
+);
+
+INSERT INTO movies (mid, mtitle, director, duration)
+VALUES (1, 'Dilwale Dulhania Le Jayenge', 'Aditya Chopra', 189);
+
+
+
+
+------->>>>>>>>>
+
+
+#Movie Application
+
+# To create a movie app to display and add
+ movies
+
+1)Display.jsp:
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<!-- Import JSTL libraries -->
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Movies List</title>
+</head>
+<body>
+
+    <!-- Set the data source -->
+    <sql:setDataSource var="myds" driver="org.postgresql.Driver"
+                       url="jdbc:postgresql://localhost:5432/postgres" 
+                       user="postgres" password="password" 
+                       scope="application" />
+
+    <!-- Execute the query -->
+    <sql:query var="rs" dataSource="${myds}">
+        select * from movies
+    </sql:query>
+
+    <!-- Display the result in a table -->
+    <table border="1">
+        <thead>
+            <tr>
+                <th>MID</th>
+                <th>Title</th>
+                <th>Director</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <c:forEach var="row" items="${rs.rows}">
+                <tr>
+                    <td><c:out value="${row.mid}"></c:out></td>
+                    <td><c:out value="${row.mtitle}"></c:out></td>
+                    <td><c:out value="${row.director}"></c:out></td>
+                    <td><c:out value="${row.duration}"></c:out></td>
+                </tr>
+            </c:forEach>
+        </tbody>
+    </table>
+
+</body>
+</html>
+
+
+2)InsertMovie.jsp:
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Insert Movie</title>
+</head>
+<body>
+    <form action="Addmovie.jsp" method="POST">
+        Movie Id: <input type="text" name="mid" required />
+        <br />
+        Title: <input type="text" name="mtitle" required />
+        <br />
+        Director: <input type="text" name="director" required />
+        <br />
+        Duration: <input type="text" name="duration" required />
+        <br />
+        <input type="submit" value="Insert Movie" />
+    </form>
+</body>
+</html>
+
+
+3)Addmovie.jsp:
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="sql" uri="http://java.sun.com/jsp/jstl/sql" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+ "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Results</title>
+</head>
+<body>
+
+    <!-- Parsing the movie ID and duration -->
+    <fmt:parseNumber var="mid" value="${param.mid}" />
+    <fmt:parseNumber var="duration" value="${param.duration}" />
+
+    <!-- Inserting the movie details into the database -->
+    <sql:update var="rowCnt" dataSource="${myds}">
+        insert into movies values(?, ?, ?, ?);
+        <sql:param value="${mid}" />
+        <sql:param value="${param.mtitle}" />
+        <sql:param value="${param.director}" />
+        <sql:param value="${duration}" />
+    </sql:update>
+
+    <!-- Confirmation message -->
+    <p>Record inserted successfully</p>
+    <a href="InsertMovies.jsp">Add another movie</a>
+
+</body>
+</html>
+
+
+-------------------------------------------------------------------------------
+
+(You have to add extenal jar spring all library)
+
+#Spring 
+
+#Employee application
+
+#To design employee application to
+ demonstrate constructor injection
+
+
+#---> Employee.java
+
+package edu.met.p1;
+
+public class Employee {
+    private int eid;
+    private String ename;
+
+    // Getter and Setter for eid
+    public int getEid() {
+        return eid;
+    }
+
+    public void setEid(int eid) {
+        this.eid = eid;
+    }
+
+    // Getter and Setter for ename
+    public String getEname() {
+        return ename;
+    }
+
+    public void setEname(String ename) {
+        this.ename = ename;
+    }
+
+    // Default Constructor
+    public Employee() {
+        // TODO Auto-generated constructor stub
+    }
+
+    // Parameterized Constructor
+    public Employee(int eid, String ename) {
+        super();
+        this.eid = eid;
+        this.ename = ename;
+    }
+
+    // toString method for displaying object information
+    @Override
+    public String toString() {
+        return "Employee [eid=" + eid + ", ename=" + ename + "]";
+    }
+
+    // Init method
+    public void init() throws Exception {
+        System.out.println("Init called");
+    }
+
+    // Destroy method
+    public void destroy() throws Exception {
+        System.out.println("Destroy called");
+    }
+}
+
+
+#--> Appctx.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Defining the Employee bean -->
+    <bean id="empbean" class="edu.met.p1.Employee" init-method="init" destroy-method="destroy">
+        <!-- Constructor arguments for Employee -->
+        <constructor-arg value="101" /> <!-- Employee ID -->
+        <constructor-arg value="Shivam" /> <!-- Employee Name -->
+    </bean>
+</beans>
+
+
+
+#--> EmployeeMain.java
+
+package edu.met.p1;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class EmployeeMain {
+    // Declaring the ApplicationContext as static
+    static ApplicationContext ctx;
+
+    public static void main(String[] args) {
+        // Loading the Spring configuration file
+        ctx = new ClassPathXmlApplicationContext("Appctx.xml");
+
+        // Retrieving the Employee bean from the Spring container
+        Employee e1 = (Employee) ctx.getBean("empbean");
+
+        // Printing the Employee object
+        System.out.println(e1);
+    }
+}
+
+
+-------------------------------------------------------------------------
+
+
+# Circular dependency
+
+#  To demonstrate and resolve circular
+ dependency
+
+
+#--> A.java
+
+package edu.met.p1;
+
+public class A {
+    B b1;
+
+    public A(B b1) {
+        this.b1 = b1;
+    }
+}
+
+
+#--> B.java
+
+package edu.met.p1;
+
+public class B {
+    A a1;
+
+    public B(A a1) {
+        this.a1 = a1;
+    }
+}
+
+
+#-->Appctx.xml
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Circular Dependency Demonstration -->
+
+    <!-- Bean definition for class A -->
+    <bean id="a" class="edu.met.p1.A">
+        <constructor-arg ref="b" />
+    </bean>
+
+    <!-- Bean definition for class B -->
+    <bean id="b" class="edu.met.p1.B">
+        <constructor-arg ref="a" />
+    </bean>
+
+</beans>
+
+
+
+#--> CircularTest.java
+
+package edu.met.p1;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class CircularTest {
+    static ApplicationContext ctx;
+
+    public static void main(String[] args) {
+        // Load the Spring configuration file
+        ctx = new ClassPathXmlApplicationContext("Appctx.xml");
+
+        // Fetch the beans from the Spring container
+        A a1 = (A) ctx.getBean("a");
+        B b1 = (B) ctx.getBean("b");
+    }
+}
+
+
+#--->C.java
+
+package edu.met.p1;
+
+public class C {
+    D d;
+
+    public C() {
+        // Constructor
+        System.out.println("Creating C");
+    }
+
+    public void setD(D d) {
+        // Setter method to set the value of d
+        System.out.println("Setting value of D");
+        this.d = d;
+    }
+}
+
+#--> D.java
+
+package edu.met.p1;
+
+public class D {
+    C c;
+
+    public D() {
+        // Constructor
+        System.out.println("Creating D");
+    }
+
+    public void setC(C c) {
+        // Setter method to set the value of c
+        System.out.println("Setting value of C");
+        this.c = c;
+    }
+}
+
+
+
+#--> Appctx.xml
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Bean for class A with lazy initialization -->
+    <bean id="a" class="edu.met.p1.A" lazy-init="true">
+        <constructor-arg ref="b"/>
+    </bean>
+
+    <!-- Bean for class B with lazy initialization -->
+    <bean id="b" class="edu.met.p1.B" lazy-init="true">
+        <constructor-arg ref="a"/>
+    </bean>
+
+    <!-- Bean for class C with property 'd' injected -->
+    <bean id="cbean" class="edu.met.p1.C">
+        <property name="d" ref="dbean"/>
+    </bean>
+
+    <!-- Bean for class D with property 'c' injected -->
+    <bean id="dbean" class="edu.met.p1.D">
+        <property name="c" ref="cbean"/>
+    </bean>
+
+</beans>
+
+
+#--> CircularTest.java
+
+package edu.met.p1;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class CircularTest {
+    static ApplicationContext ctx;
+
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        ctx = new ClassPathXmlApplicationContext("Appctx.xml");
+
+        // Retrieve beans C and D from the Spring context
+        C c1 = (C) ctx.getBean("cbean");
+        D d1 = (D) ctx.getBean("dbean");
+    }
+}
+
+------------------------------------------------------------------------------------------------------
+
+
+#Spring JDBC
+
+# To design product application to insert record
+ using jdbc
+
+--->>>>>>>database-----------------
+
+CREATE TABLE products (
+    pid INT PRIMARY KEY,
+    pname VARCHAR(50),
+    price INT
+);
+
+INSERT INTO products (pid, pname, price)
+VALUES (103, 't-shirt', 2500);
+
+SELECT * FROM products;
+
+
+-------->>>>>>>Databse>>------------------
+
+
+#--->ProductBean.java
+
+package edu.met.p1;
+
+public class ProductBean {
+    int pid;
+    String pname;
+    int price;
+
+    // Constructor with parameters
+    public ProductBean(int pid, String pname, int price) {
+        super();
+        this.pid = pid;
+        this.pname = pname;
+        this.price = price;
+    }
+
+    // Default constructor
+    public ProductBean() {
+        super();
+    }
+
+    // Getter and setter methods
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    // Overridden toString method to display product information
+    @Override
+    public String toString() {
+        return "ProductBean [pid=" + pid + ", pname=" + pname + ", price=" + price + "]";
+    }
+}
+
+
+#--> AppCtx.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- Bean for ProductBean -->
+    <bean id="pbean" class="edu.met.p1.ProductBean">
+        <constructor-arg value="103"></constructor-arg>
+        <constructor-arg value="t-shirt"></constructor-arg>
+        <constructor-arg value="2500"></constructor-arg>
+    </bean>
+
+    <!-- Bean for DataSource configuration -->
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="org.postgresql.Driver"></property>
+        <property name="url" value="jdbc:postgresql://localhost:5432/postgres"></property>
+        <property name="username" value="postgres"></property>
+        <property name="password" value="password"></property>
+    </bean>
+
+    <!-- Bean for JdbcTemplate -->
+    <bean id="jdbcT" class="org.springframework.jdbc.core.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!-- Bean for ProductDao -->
+    <bean id="pdao" class="edu.met.p1.ProductDao">
+        <constructor-arg ref="jdbcT"></constructor-arg>
+    </bean>
+
+</beans>
+
+
+#--->ProductDao.java
+
+package edu.met.p1;
+
+import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+public class ProductDao {
+    
+    JdbcTemplate jdbcT;
+
+    // Constructor to inject JdbcTemplate
+    public ProductDao(JdbcTemplate jdbcT) {
+        super();
+        this.jdbcT = jdbcT;
+    }
+
+    // Method to save a product record
+    public int saveProduct(ProductBean p1) {
+        String ins = "INSERT INTO products VALUES(" + p1.getPid() + ",'" + p1.getPname() + "'," + p1.getPrice() + ")";
+        return jdbcT.update(ins);
+    }
+
+    // Method to fetch all product records
+    public List<ProductBean> getAll() {
+        String sel = "SELECT * FROM products";
+        return jdbcT.query(sel, new ProductRowMapper());
+    }
+}
+
+
+#---> ProductMain.java
+
+
+package edu.met.p1;
+
+import java.util.List;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class ProductMain {
+
+    static ApplicationContext ctx;
+
+    public static void main(String[] args) {
+        // Load Spring application context
+        ctx = new ClassPathXmlApplicationContext("AppCtx.xml");
+
+        // Retrieve beans from Spring context
+        ProductBean b1 = (ProductBean) ctx.getBean("pbean");
+        ProductDao pd = (ProductDao) ctx.getBean("pdao");
+
+        // Save product to database (optional, uncomment if you want to insert data)
+        // System.out.println(pd.saveProduct(b1) + " Inserted");
+
+        // Retrieve all products and display them
+        List<ProductBean> l1 = pd.getAll();
+        System.out.println("pid\tpname\tprice");
+        
+        // Loop through the list and print each product
+        for (ProductBean row : l1) {
+            System.out.println(row.getPid() + "\t" + row.getPname() + "\t" + row.getPrice());
+        }
+    }
+}
+
+
+
+#---> ProductRowMapper.java
+
+
+package edu.met.p1;
+
+import java.sql.*;
+import org.springframework.jdbc.core.*;
+
+public class ProductRowMapper implements RowMapper<ProductBean> {
+    @Override
+    public ProductBean mapRow(ResultSet arg0, int arg1) throws SQLException {
+        ProductBean b1 = new ProductBean();
+        b1.setPid(arg0.getInt(1));
+        b1.setPname(arg0.getString(2));
+        b1.setPrice(arg0.getInt(3));
+        return b1;
+    }
+}
+
+
+---------------------------------------------------------------
+
+#AOP(aspect orianted programming)
+
+--->BankAccount.java
+
+package edu.met.p1;
+
+public class BankAccount {
+    int acNo;
+    String acName;
+    double balance;
+
+    // Default constructor
+    public BankAccount() {
+    }
+
+    // Parameterized constructor
+    public BankAccount(int acNo, String acName, double balance) {
+        super();
+        this.acNo = acNo;
+        this.acName = acName;
+        this.balance = balance;
+    }
+
+    // Getters and setters
+    public int getAcNo() {
+        return acNo;
+    }
+
+    public void setAcNo(int acNo) {
+        this.acNo = acNo;
+    }
+
+    public String getAcName() {
+        return acName;
+    }
+
+    public void setAcName(String acName) {
+        this.acName = acName;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    // toString method to display account details
+    @Override
+    public String toString() {
+        return "BankAccount [acNo=" + acNo + ", acName=" + acName + ", balance=" + balance + "]";
+    }
+
+    // Method to deposit money into the account
+    public void deposit(double amt) {
+        this.balance += amt;
+    }
+
+    // Method to withdraw money from the account
+    public void withdraw(double amt) {
+        if (this.balance - amt >= 0) {
+            this.balance -= amt;
+        } else {
+            throw new RuntimeException("Insufficient balance");
+        }
+    }
+}
+
+
+
+#---> BankAspect.java
+
+
+package edu.met.p1;
+
+import org.aspectj.lang.annotation.*;
+
+@Aspect
+public class BankAspect {
+
+    // Define a join point for set methods
+    @Pointcut("execution(* edu.met.p1.BankAccount.set*(..))")
+    public void getPC() {}
+
+    // Advice that runs before the setter methods
+    @Before("getPC()")
+    public void beforeMethod() {
+        System.out.println("Set is getting called - Before");
+    }
+
+    // Advice that runs after the setter methods
+    @After("getPC()")
+    public void afterMethod() {
+        System.out.println("Set is getting called - After");
+    }
+
+    // Join point for withdraw method
+    @Pointcut("execution(* edu.met.p1.BankAccount.withdraw(..))")
+    public void getw() {}
+
+    // Advice for a successful withdraw
+    @AfterReturning("getw()")
+    public void afterRet() {
+        System.out.println("Withdraw Successful");
+    }
+
+    // Advice for an unsuccessful withdraw (when exception is thrown)
+    @AfterThrowing("getw()")
+    public void afterEx() {
+        System.out.println("Withdraw Unsuccessful");
+    }
+}
+
+
+#--->AppCtx.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/aop
+                           http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- Enable AspectJ auto-proxying -->
+    <aop:aspectj-autoproxy />
+
+    <!-- Bean definition for BankAccount -->
+    <bean id="acBean" class="edu.met.p1.BankAccount">
+        <property name="acNo" value="101" />
+        <property name="acName" value="Shivam" />
+        <property name="balance" value="5000" />
+    </bean>
+
+</beans>
+
+#----> BankMain.java
+
+
+package edu.met.p1;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+public class BankMain {
+    static ApplicationContext ctx;
+
+    public static void main(String[] args) {
+        // Load Spring configuration
+        ctx = new ClassPathXmlApplicationContext("AppCtx.xml");
+
+        // Retrieve the BankAccount bean from the application context
+        BankAccount b1 = (BankAccount) ctx.getBean("acBean");
+
+        // Print the initial state of the BankAccount object
+        System.out.println(b1);
+
+        // Perform a withdrawal of 2000
+        b1.withdraw(2000);
+        System.out.println("After withdrawing 2000: " + b1);
+
+        // Perform a withdrawal of 4000
+        b1.withdraw(4000);
+        System.out.println("After withdrawing 4000: " + b1);
+    }
+}
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Springboot() Application:
+
+ 
+
+#-->GreetingController.java
+
+package com.example.demo;
+
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+public class GreetingController {
+
+    // Method to return welcome message at the root URL
+    @GetMapping("/")
+    public String welcomeMessage() {
+        return "<html><body>Welcome to MET</body></html>";
+    }
+
+    // Method to return a personalized welcome message
+    @GetMapping("/user")
+    public String welcomeMessageName() {
+        return "<html><body>Welcome to MET : Rohit</body></html>";
+    }
+}
+
+--------------------------------------------------------------------------------------------------
+
+1 H2 Database
+2 JDBC API
+3 PostgreSQL Driver
+4 Spring Boot DevTools
+5 Spring Data JDBC
+6 Spring Reactive Web
+7 Spring Web
+8 Spring Web Servers
+
+#DATABASE TABLE
+
+create table hotel(hid integer,hname varchar(50),price integer);
+insert into hotel values(101,"lucky",2000);
+insert into hotel values(101,"lucky",2000);
+
+------
+new>other>soringBoot>spring start project>
+
+-----
+
+
+#Springboot()
+# Hotel Applicaton
+
+
+
+#-->Hotel.java
+
+package com.example.demo;
+
+public class Hotel {
+    private int hid;
+    private String hname;
+    private int price;
+
+    // Default constructor
+    public Hotel() {}
+
+    // Parameterized constructor
+    public Hotel(int hid, String hname, int price) {
+        super();
+        this.hid = hid;
+        this.hname = hname;
+        this.price = price;
+    }
+
+    // Getter and Setter for hid
+    public int getHid() {
+        return hid;
+    }
+
+    public void setHid(int hid) {
+        this.hid = hid;
+    }
+
+    // Getter and Setter for hname
+    public String getHname() {
+        return hname;
+    }
+
+    public void setHname(String hname) {
+        this.hname = hname;
+    }
+
+    // Getter and Setter for price
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+}
+
+
+#--> HotelRepo.java
+
+package com.example.demo;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class HotelRepo {
+
+    @Autowired
+    private JdbcTemplate jdbcT;
+
+    // Get all the records
+    public List<Hotel> getAll() {
+        String sel = "SELECT * FROM hotel";
+        return jdbcT.query(sel, new HotelRowMapper());
+    }
+
+    // Get hotel by ID
+    public List<Hotel> getById(String id) {
+        String sel = "SELECT * FROM hotel WHERE hid=" + Integer.parseInt(id);
+        return jdbcT.query(sel, new HotelRowMapper());
+    }
+}
+
+
+
+#--->HotelController.java
+
+
+package com.example.demo;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HotelController {
+
+    @Autowired
+    private HotelRepo repo;
+
+    // Endpoint to get all hotels
+    @GetMapping("/hotel")
+    public List<Hotel> getHotels() {
+        return repo.getAll();
+    }
+
+    // Endpoint to get hotel by ID
+    @RequestMapping(value = "/hotel/{id}", method = RequestMethod.GET)
+    public List<Hotel> getById(@PathVariable("id") String id) {
+        return repo.getById(id);
+    }
+}
+
+
+#---> HotelRowMapper.java
+
+package com.example.demo;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import org.springframework.jdbc.core.RowMapper;
+
+public class HotelRowMapper implements RowMapper<Hotel> {
+
+    @Override
+    public Hotel mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Hotel h1 = new Hotel();
+        h1.setHid(rs.getInt(1));        // Set hotel ID
+        h1.setHname(rs.getString(2));   // Set hotel name
+        h1.setPrice(rs.getInt(3));      // Set hotel price
+        return h1;
+    }
+}
+
+
+#---> application.properties
+
+ spring.application.name=HotelApplication
+ spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+ spring.datasource.username=postgres
+ spring.datasource.password=password
+
+
+
+----------------------------------------------------------
+
+#---->Cokkies
+
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Insert title here</title>
+</head>
+<body>
+    <%! Cookie[] cookies; %>
+    <%
+        cookies = request.getCookies();
+        if (cookies == null) {
+            // This is the first request
+            // Create a cookie
+            Cookie c1 = new Cookie("cntr", "1");
+            // c1.setMaxAge(60); // You can uncomment this to set the cookie's lifespan
+            out.println("This is your first visit.");
+            // Add cookie to the response
+            response.addCookie(c1);
+        } else {
+            // This is not the first request
+            for (int i = 0; i < cookies.length; i++) {
+                Cookie temp = cookies[i];
+                if (temp.getName().equals("cntr")) {
+                    // This is the second visit
+                    // Fetch the old value
+                    int val = Integer.parseInt(temp.getValue());
+                    val = val + 1;
+                    out.println("This is your visit number: " + val);
+                    Cookie updated = new Cookie("cntr", "" + val);
+                    // updated.setMaxAge(60); // You can uncomment this to set the cookie's lifespan
+                    response.addCookie(updated);
+                }
+            }
+        }
+    %>
+</body>
+</html>
+
+-------------------------------------------------------
+#-->Session 
+
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+    pageEncoding="ISO-8859-1" session="true"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Session Counter</title>
+</head>
+<body>
+    <% int cnt = 0; %>
+    <p>Session ID: <%= session.getId() %></p>
+
+    <%
+        // Display the number of times the page has been visited
+        if (session.getAttribute("cntr") == null) {
+            // First visit: create a session attribute
+            session.setAttribute("cntr", "1");
+            // Display message for first visit
+            out.println("<h1>This is your first visit</h1>");
+        } else {
+            // Not the first request: fetch and update the "cntr" attribute
+            cnt = Integer.parseInt(session.getAttribute("cntr").toString());
+            // Increment the count and display
+            cnt = cnt + 1;
+            out.println("<h1>This is your visit number: " + cnt + "</h1>");
+            // Update the session attribute with the new count
+            session.setAttribute("cntr", "" + cnt);
+        }
+    %>
+</body>
+</html>
+
+
+
+
+
+
+All type of codes
+
+
+create table users(uid varchar(50),pwd varchar(50),uname varchar(50))
+
+insert into users values('u1','1234','Shubham')
+insert into users values('u2','5678','Rohan')
+select * from users
+
+
+
+
+
+
+create table movies(
+mid Integer primary key,
+mtitle varchar(50),
+director Varchar(50),
+duration Integer
+);
+
+insert into movies(mid,mtitle,director,duration) values(1,'Dilwale Dulhania Le Jayenge','Aditya Chopra',189);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
